@@ -40,13 +40,28 @@ const products = [
 /* Declare an empty array named cart to hold the items in the cart */
 let cart = [];
 
+/* Create a helper function named findItemById that takes in an array and a productId as arguments */
+function findItemById(array, productId) {
+  return array.find(item => item.productId === productId);
+}
+
+/* Create a function named getProductById that takes in the productId as an argument */
+function getProductById(productId) {
+  return findItemById(products, productId);
+}
+
+/* Create a function named findCartItemById that takes in the productId as an argument */
+function findCartItemById(productId) {
+  return findItemById(cart, productId);
+}
+
 /* Create a function named addProductToCart that takes in the product productId as an argument */
 function addProductToCart(productId) {
   // Find the product in the products array
-  const product = products.find(product => product.productId === productId);
+  const product = getProductById(productId);
   if (product) {
     // Check if the product is already in the cart
-    const cartItem = cart.find(item => item.productId === productId);
+    const cartItem = findCartItemById(productId);
     if (cartItem) {
       // Increase quantity if product is already in the cart
       cartItem.quantity++;
@@ -61,7 +76,7 @@ function addProductToCart(productId) {
 /* Create a function named increaseQuantity that takes in the productId as an argument */
 function increaseQuantity(productId) {
   // Find the product in the cart
-  const cartItem = cart.find(item => item.productId === productId);
+  const cartItem = findCartItemById(productId);
   if (cartItem) {
     // Increase the quantity
     cartItem.quantity++;
@@ -71,7 +86,7 @@ function increaseQuantity(productId) {
 /* Create a function named decreaseQuantity that takes in the productId as an argument */
 function decreaseQuantity(productId) {
   // Find the product in the cart
-  const cartItem = cart.find(item => item.productId === productId);
+  const cartItem = findCartItemById(productId);
   if (cartItem) {
     // Decrease the quantity
     cartItem.quantity--;
@@ -90,7 +105,7 @@ function removeProductFromCart(productId) {
     // Remove the product from the cart
     const removedProduct = cart.splice(index, 1)[0];
     // Reset the product's quantity to 0
-    const product = products.find(product => product.productId === removedProduct.productId);
+    const product = getProductById(removedProduct.productId);
     if (product) {
       product.quantity = 0;
     }
@@ -110,7 +125,7 @@ function cartTotal() {
 function emptyCart() {
   // Reset the quantity of all products in the cart to 0
   cart.forEach(item => {
-    const product = products.find(product => product.productId === item.productId);
+    const product = getProductById(item.productId);
     if (product) {
       product.quantity = 0;
     }
@@ -161,3 +176,5 @@ module.exports = {
   emptyCart,
   convertCurrency
 };
+
+
